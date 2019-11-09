@@ -10,7 +10,7 @@ typedef struct Node {
 };
 
 //returns the length of the linked list
-int Traverse(struct Node* headNode) {
+int FindLength(struct Node* headNode) {
 
     int len = 0;
 
@@ -50,7 +50,7 @@ struct Node* InsertFront (struct Node * headNode, char *firstName, char *lastNam
 
 
 struct Node* InsertMiddle(struct Node *headNode, char *firstName, char * lastName, int puid, int age){
-    int listLen = Traverse(headNode);
+    int listLen = FindLength(headNode);
 
     //Find the middle
     int insertIndex;
@@ -65,7 +65,7 @@ struct Node* InsertMiddle(struct Node *headNode, char *firstName, char * lastNam
         insertIndex = listLen/2;
     }
 
-    //Traverse to the middle
+    //FindLength to the middle
     struct Node *tempNode = headNode;
     for (int i=0; i < insertIndex - 1; i++){
         tempNode = tempNode->next;
@@ -81,7 +81,7 @@ struct Node* InsertMiddle(struct Node *headNode, char *firstName, char * lastNam
 }
 
 struct Node *InsertEnd(struct Node *headNode, char *firstName, char * lastName, int puid, int age){
-    int listLen = Traverse(headNode);
+    int listLen = FindLength(headNode);
 
     struct Node *tempNode = headNode;
 
@@ -105,7 +105,7 @@ struct Node *DeleteFront (struct Node *headNode) {
 }
 
 struct Node *DeleteMiddle (struct Node *headNode) {
-    int listLen = Traverse(headNode);
+    int listLen = FindLength(headNode);
 
     //Find the middle
     int deleteIndex;
@@ -135,33 +135,109 @@ struct Node *DeleteMiddle (struct Node *headNode) {
 
 }
 
+struct Node *DeleteEnd(struct Node *headNode){
+    int deleteIndex = FindLength(headNode);
+
+
+    struct Node *tempNode = headNode;
+
+    for (int i = 0; i < deleteIndex - 2; i++){
+        tempNode = tempNode-> next;
+    }
+
+    tempNode->next = NULL;
+    free(tempNode);
+
+    return headNode;
+
+}
+
+
+int Traverse(struct Node *headNode, int puidKey){
+    struct Node *tempNode = headNode;
+    while (tempNode != NULL) {
+        if (tempNode->puid == puidKey) {
+            return 0;
+        }
+
+        tempNode=tempNode->next;
+    }
+    return -1;
+
+}
+
+int LookUpByIndex (struct Node *headNode, int index) {
+    struct Node *tempNode = headNode;
+
+    if (FindLength(headNode) < index - 1) {
+        return -1;
+    }
+
+    for(int i = 0; i < index; i++) {
+        tempNode=tempNode->next;
+    }
+    return tempNode->puid;
+
+}
+
+void PrintList (struct Node *headNode) {
+
+    struct Node *tempNode = headNode;
+    while (tempNode != NULL) {
+        printf("[ %i ]-->", tempNode->puid);
+        tempNode=tempNode->next;
+    }
+    printf("NULL\n");
+    printf("Length of list: %i\n", FindLength(headNode));
+}
+
 int main() {
 
-    int a = 0;
 
+    printf("\nCreating a List With One Element (1111)\n");
+    printf("=======================================\n");
     struct Node *mainNode = CreateListNode("Pranav", "Bhusari", 18, 1111);
+    PrintList(mainNode);
 
-    a = Traverse(mainNode);
+    printf("\nInserting an Element to the Front (3333)\n");
+    printf("========================================\n");
+    InsertFront(mainNode, "Oscar", "Wang", 22, 3333);
+    PrintList(mainNode);
 
-    InsertFront(mainNode, "Oscar", "Wang", 20, 3333);
-
-    a = Traverse(mainNode);
-
+    printf("\nInserting an Element to the Middle (2222)\n");
+    printf("=========================================\n");
     InsertMiddle(mainNode, "Rubbert", "Kim", 18, 2222);
+    PrintList(mainNode);
 
-    a = Traverse(mainNode);
-
-    InsertEnd(mainNode, "Brenda", "Brewer", 18, 4444);
-
-    a = Traverse(mainNode);
+    printf("\nInserting an Element to the End (4444)\n");
+    printf("======================================\n");
+    InsertEnd(mainNode, "Brenda", "Brewer", 4444, 18);
+    PrintList(mainNode);
 
     // Why are the deletion functions call by value??????
+    printf("\nDeleting an Element at the Front (1111)\n");
+    printf("========================================\n");
     mainNode = DeleteFront(mainNode);
+    PrintList(mainNode);
 
-    a = Traverse(mainNode);
+    printf("\nDeleting an Element at the End ()\n");
+    printf("========================================\n");
+    DeleteEnd(mainNode);
+    PrintList(mainNode);
 
-    mainNode = DeleteMiddle(mainNode);
+    printf("\nInserting An Element to the Front\n");
+    printf("=================================\n");
+    InsertFront(mainNode, "ASD", "QWE", 23, 6900);
+    PrintList(mainNode);
 
-    a = Traverse(mainNode);
+    printf("\nTraversing to the PUID 6900   \n");
+    printf("=================================\n");
+    printf("Result (0 is succsessful): %i\n", Traverse(mainNode, 6900));
+    printf("Result (0 is succsessful): %i\n", Traverse(mainNode, 2232));
+
+    printf("\nLooking Up By Index           \n");
+    printf("=================================\n");
+    printf("The PUID of the #%i index is:%i\n", 1   ,LookUpByIndex(mainNode, 1));
+    printf("The PUID of the #%i index is:%i\n", 500 ,LookUpByIndex(mainNode, 500));
 
 }
