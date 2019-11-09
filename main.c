@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Definition of Node Structure
 typedef struct Node {
     char *firstName;
     char *lastName;
@@ -9,7 +10,7 @@ typedef struct Node {
     struct Node *next;
 };
 
-//returns the length of the linked list
+// Returns the length of the linked list
 int FindLength(struct Node* headNode) {
 
     int len = 0;
@@ -23,12 +24,13 @@ int FindLength(struct Node* headNode) {
 
 }
 
-
+// LAB SPECIFIED: Creates a list with no nodes
 struct Node* CreateListNoNodes() {
     struct Node* start;
     return start;
 };
 
+// LAB SPECIFIED: Creates a list with a single node
 struct Node* CreateListNode(firstName, lastName, age, puid){
     struct Node * headNode =  CreateListNoNodes();
     headNode = (struct Node*) malloc (sizeof (struct Node));
@@ -40,6 +42,7 @@ struct Node* CreateListNode(firstName, lastName, age, puid){
     return headNode;
 }
 
+// LAB SPECIFIED: Inserts an item in front of the linked list
 // Assuming that the last element is defined as the front element
 struct Node* InsertFront (struct Node * headNode, char *firstName, char *lastName, int puid, int age){
     struct Node * newNode = CreateListNode(firstName, lastName, puid, age);
@@ -48,7 +51,7 @@ struct Node* InsertFront (struct Node * headNode, char *firstName, char *lastNam
 }
 
 
-
+// LAB SPECIFIED: Inserts an item in the middle of the linked list
 struct Node* InsertMiddle(struct Node *headNode, char *firstName, char * lastName, int puid, int age){
     int listLen = FindLength(headNode);
 
@@ -80,20 +83,23 @@ struct Node* InsertMiddle(struct Node *headNode, char *firstName, char * lastNam
 
 }
 
+// LAB SPECIFIED: Inserts an item at the end of the linked list
 struct Node *InsertEnd(struct Node *headNode, char *firstName, char * lastName, int puid, int age){
     int listLen = FindLength(headNode);
 
     struct Node *tempNode = headNode;
 
+    // Traversing to the end of the list
     for (int i=0; i < listLen - 1; i++){
         tempNode = tempNode->next;
     }
 
-
+    //Actually inserting the value
     struct Node *newNode = CreateListNode(firstName, lastName, age, puid);
     tempNode->next=newNode;
 }
 
+// LAB SPECIFIED: Deletes an item at the front of the linked list
 struct Node *DeleteFront (struct Node *headNode) {
 
     struct Node *tempNode = headNode;
@@ -104,6 +110,7 @@ struct Node *DeleteFront (struct Node *headNode) {
 
 }
 
+// LAB SPECIFIED: Deletes an item at the middle of a linked list
 struct Node *DeleteMiddle (struct Node *headNode) {
     int listLen = FindLength(headNode);
 
@@ -140,16 +147,19 @@ struct Node *DeleteMiddle (struct Node *headNode) {
 
 }
 
+// LAB SPECIFIED: Deletes an item at the end of a linked list
 struct Node *DeleteEnd(struct Node *headNode){
     int deleteIndex = FindLength(headNode);
 
 
     struct Node *tempNode = headNode;
 
+    // Traverses to the end of the linked list
     for (int i = 0; i < deleteIndex - 2; i++){
         tempNode = tempNode-> next;
     }
 
+    // Deletes the value
     tempNode->next = NULL;
     free(tempNode);
 
@@ -157,7 +167,8 @@ struct Node *DeleteEnd(struct Node *headNode){
 
 }
 
-
+// LAB SPECIFIED: Traverses a linked list until a cetain PUID key is found, returns 0
+// Returns -1 if the key is not found
 int Traverse(struct Node *headNode, int puidKey){
     struct Node *tempNode = headNode;
     while (tempNode != NULL) {
@@ -167,10 +178,13 @@ int Traverse(struct Node *headNode, int puidKey){
 
         tempNode=tempNode->next;
     }
+
+    // ... if all else fails ...
     return -1;
 
 }
 
+// LAB SPECIFIED: Looks up the PUID of a certain index
 int LookUpByIndex (struct Node *headNode, int index) {
     struct Node *tempNode = headNode;
 
@@ -181,10 +195,12 @@ int LookUpByIndex (struct Node *headNode, int index) {
     for(int i = 0; i < index; i++) {
         tempNode=tempNode->next;
     }
+
     return tempNode->puid;
 
 }
 
+// Pretty list printing
 void PrintList (struct Node *headNode) {
 
     struct Node *tempNode = headNode;
@@ -197,7 +213,6 @@ void PrintList (struct Node *headNode) {
 }
 
 int main() {
-
 
     printf("\nCreating a List With One Element (1111)\n");
     printf("=======================================\n");
