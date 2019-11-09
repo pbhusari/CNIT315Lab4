@@ -120,15 +120,20 @@ struct Node *DeleteMiddle (struct Node *headNode) {
         deleteIndex = listLen/2;
     }
 
-    struct Node *tempNode = headNode;
+    // Taken from: https://www.geeksforgeeks.org/delete-middle-of-linked-list/
+    struct Node *slowPtr= headNode;
+    struct Node *fastPtr= headNode;
 
-    for (int i = 0; i < deleteIndex; i++){
-        tempNode = tempNode-> next;
+    struct Node *previous;
+    while (fastPtr != NULL && fastPtr->next != NULL) {
+
+        fastPtr = fastPtr->next->next;
+        previous = slowPtr;
+        slowPtr = slowPtr->next;
     }
 
-    struct Node *swapNode = tempNode->next;
-    tempNode->next;
-    swapNode->next = NULL;
+    previous->next = slowPtr->next;
+    slowPtr = NULL;
 
     return headNode;
 
@@ -220,7 +225,19 @@ int main() {
     mainNode = DeleteFront(mainNode);
     PrintList(mainNode);
 
-    printf("\nDeleting an Element at the End ()\n");
+    printf("\nInserting an Element to the Middle (9998)\n");
+    printf("=========================================\n");
+    InsertMiddle(mainNode, "Rubbert", "Kim", 18, 9998);
+    PrintList(mainNode);
+
+
+    printf("\nDeleting Element in the Middle \n");
+    printf("================================\n");
+    mainNode = DeleteMiddle(mainNode);
+    PrintList(mainNode);
+
+
+    printf("\nDeleting an Element at the End \n");
     printf("========================================\n");
     DeleteEnd(mainNode);
     PrintList(mainNode);
@@ -232,8 +249,8 @@ int main() {
 
     printf("\nTraversing to the PUID 6900   \n");
     printf("=================================\n");
-    printf("Result (0 is succsessful): %i\n", Traverse(mainNode, 6900));
-    printf("Result (0 is succsessful): %i\n", Traverse(mainNode, 2232));
+    printf("Result (0 is successful): %i\n", Traverse(mainNode, 6900));
+    printf("Result (0 is successful): %i\n", Traverse(mainNode, 2232));
 
     printf("\nLooking Up By Index           \n");
     printf("=================================\n");
