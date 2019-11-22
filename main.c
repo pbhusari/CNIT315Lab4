@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 // Definition of Node Structure
 typedef struct Node {
     char *firstName;
@@ -11,7 +12,7 @@ typedef struct Node {
 };
 
 // Returns the length of the linked list
-int FindLength(struct Node* headNode) {
+int FindLength(struct Node *headNode) {
 
     int len = 0;
 
@@ -25,15 +26,15 @@ int FindLength(struct Node* headNode) {
 }
 
 // LAB SPECIFIED: Creates a list with no nodes
-struct Node* CreateListNoNodes() {
-    struct Node* start;
+struct Node *CreateListNoNodes() {
+    struct Node *start;
     return start;
 };
 
 // LAB SPECIFIED: Creates a list with a single node
-struct Node* CreateListNode(firstName, lastName, age, puid){
-    struct Node * headNode =  CreateListNoNodes();
-    headNode = (struct Node*) malloc (sizeof (struct Node));
+struct Node *CreateListNode(char *firstName, char *lastName, int age, int puid) {
+    struct Node *headNode = CreateListNoNodes();
+    headNode = (struct Node *) malloc(sizeof(struct Node));
     headNode->firstName = firstName;
     headNode->lastName = lastName;
     headNode->puid = puid;
@@ -44,15 +45,15 @@ struct Node* CreateListNode(firstName, lastName, age, puid){
 
 // LAB SPECIFIED: Inserts an item in front of the linked list
 // Assuming that the last element is defined as the front element
-struct Node* InsertFront (struct Node * headNode, char *firstName, char *lastName, int puid, int age){
-    struct Node * newNode = CreateListNode(firstName, lastName, puid, age);
+struct Node *InsertFront(struct Node *headNode, char *firstName, char *lastName, int age, int puid) {
+    struct Node *newNode = CreateListNode(firstName, lastName, age, puid);
     headNode->next = newNode;
     return headNode;
 }
 
 
 // LAB SPECIFIED: Inserts an item in the middle of the linked list
-struct Node* InsertMiddle(struct Node *headNode, char *firstName, char * lastName, int puid, int age){
+struct Node *InsertMiddle(struct Node *headNode, char *firstName, char *lastName, int age, int puid) {
     int listLen = FindLength(headNode);
 
     //Find the middle
@@ -60,22 +61,20 @@ struct Node* InsertMiddle(struct Node *headNode, char *firstName, char * lastNam
 
     if (listLen == 0) {
         insertIndex = 0;
-    }
-    else if (listLen % 2 == 1) {
-        insertIndex = (listLen - 1)/2;
-    }
-    else {
-        insertIndex = listLen/2;
+    } else if (listLen % 2 == 1) {
+        insertIndex = (listLen - 1) / 2;
+    } else {
+        insertIndex = listLen / 2;
     }
 
     //FindLength to the middle
     struct Node *tempNode = headNode;
-    for (int i=0; i < insertIndex - 1; i++){
+    for (int i = 0; i < insertIndex - 1; i++) {
         tempNode = tempNode->next;
     }
 
     //Actually inserting the stuff
-    struct Node *newNode = CreateListNode(firstName, lastName, puid, age);
+    struct Node *newNode = CreateListNode(firstName, lastName, age, puid);
     newNode->next = tempNode->next;
     tempNode->next = newNode;
 
@@ -84,23 +83,23 @@ struct Node* InsertMiddle(struct Node *headNode, char *firstName, char * lastNam
 }
 
 // LAB SPECIFIED: Inserts an item at the end of the linked list
-struct Node *InsertEnd(struct Node *headNode, char *firstName, char * lastName, int puid, int age){
+struct Node *InsertEnd(struct Node *headNode, char *firstName, char *lastName, int age, int puid) {
     int listLen = FindLength(headNode);
 
     struct Node *tempNode = headNode;
 
     // Traversing to the end of the list
-    for (int i=0; i < listLen - 1; i++){
+    for (int i = 0; i < listLen - 1; i++) {
         tempNode = tempNode->next;
     }
 
     //Actually inserting the value
     struct Node *newNode = CreateListNode(firstName, lastName, age, puid);
-    tempNode->next=newNode;
+    tempNode->next = newNode;
 }
 
 // LAB SPECIFIED: Deletes an item at the front of the linked list
-struct Node *DeleteFront (struct Node *headNode) {
+struct Node *DeleteFront(struct Node *headNode) {
 
     struct Node *tempNode = headNode;
     headNode = headNode->next;
@@ -111,25 +110,11 @@ struct Node *DeleteFront (struct Node *headNode) {
 }
 
 // LAB SPECIFIED: Deletes an item at the middle of a linked list
-struct Node *DeleteMiddle (struct Node *headNode) {
-    int listLen = FindLength(headNode);
-
-    //Find the middle
-    int deleteIndex;
-
-    if (listLen == 0) {
-        deleteIndex = 0;
-    }
-    else if (listLen % 2 == 1) {
-        deleteIndex = (listLen - 1)/2;
-    }
-    else {
-        deleteIndex = listLen/2;
-    }
+struct Node *DeleteMiddle(struct Node *headNode) {
 
     // Taken from: https://www.geeksforgeeks.org/delete-middle-of-linked-list/
-    struct Node *slowPtr= headNode;
-    struct Node *fastPtr= headNode;
+    struct Node *slowPtr = headNode;
+    struct Node *fastPtr = headNode;
 
     struct Node *previous;
     while (fastPtr != NULL && fastPtr->next != NULL) {
@@ -148,15 +133,15 @@ struct Node *DeleteMiddle (struct Node *headNode) {
 }
 
 // LAB SPECIFIED: Deletes an item at the end of a linked list
-struct Node *DeleteEnd(struct Node *headNode){
+struct Node *DeleteEnd(struct Node *headNode) {
     int deleteIndex = FindLength(headNode);
 
 
     struct Node *tempNode = headNode;
 
     // Traverses to the end of the linked list
-    for (int i = 0; i < deleteIndex - 2; i++){
-        tempNode = tempNode-> next;
+    for (int i = 0; i < deleteIndex - 2; i++) {
+        tempNode = tempNode->next;
     }
 
     // Deletes the value
@@ -169,14 +154,14 @@ struct Node *DeleteEnd(struct Node *headNode){
 
 // LAB SPECIFIED: Traverses a linked list until a cetain PUID key is found, returns 0
 // Returns -1 if the key is not found
-int Traverse(struct Node *headNode, int puidKey){
+int Traverse(struct Node *headNode, int puidKey) {
     struct Node *tempNode = headNode;
     while (tempNode != NULL) {
         if (tempNode->puid == puidKey) {
             return 0;
         }
 
-        tempNode=tempNode->next;
+        tempNode = tempNode->next;
     }
 
     // ... if all else fails ...
@@ -185,15 +170,15 @@ int Traverse(struct Node *headNode, int puidKey){
 }
 
 // LAB SPECIFIED: Looks up the PUID of a certain index
-int LookUpByIndex (struct Node *headNode, int index) {
+int LookUpByIndex(struct Node *headNode, int index) {
     struct Node *tempNode = headNode;
 
     if (FindLength(headNode) < index - 1) {
         return -1;
     }
 
-    for(int i = 0; i < index; i++) {
-        tempNode=tempNode->next;
+    for (int i = 0; i < index; i++) {
+        tempNode = tempNode->next;
     }
 
     return tempNode->puid;
@@ -201,12 +186,12 @@ int LookUpByIndex (struct Node *headNode, int index) {
 }
 
 // Pretty list printing
-void PrintList (struct Node *headNode) {
+void PrintList(struct Node *headNode) {
 
     struct Node *tempNode = headNode;
     while (tempNode != NULL) {
-        printf("[ %i ]-->", tempNode->puid);
-        tempNode=tempNode->next;
+        printf("[ %s ]-->", tempNode->firstName);
+        tempNode = tempNode->next;
     }
     printf("NULL\n");
     printf("Length of list: %i\n", FindLength(headNode));
@@ -269,7 +254,7 @@ int main() {
 
     printf("\nLooking Up By Index           \n");
     printf("=================================\n");
-    printf("The PUID of the #%i index is:%i\n", 1   ,LookUpByIndex(mainNode, 1));
-    printf("The PUID of the #%i index is:%i\n", 500 ,LookUpByIndex(mainNode, 500));
+    printf("The PUID of the #%i index is:%i\n", 1, LookUpByIndex(mainNode, 1));
+    printf("The PUID of the #%i index is:%i\n", 500, LookUpByIndex(mainNode, 500));
 
 }
